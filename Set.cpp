@@ -1,64 +1,109 @@
+/*
+Name: Sukanya Raj
+File name: Set.cpp
+Date: 9/25/18
+Assignment: Project 2
+Description: implementation of class Set
+*/
+
 #include <iostream>
+#include <vector>
 #include "Set.h"
 using namespace std;
 
-/**Gets the current number of entries in this set
-@return The integer number of entries currently in the set.*/
+/*Initializes private member variables*/
+template<class ItemType>
+Set<ItemType>::Set()
+{
+  item_count_ = 0;
+  max_items_ = DEFAULT_SET_SIZE;
+}
+
+/*Gets the current number of entries in this set*/
 template<class ItemType>
 int Set<ItemType>::getCurrentSize() const
 {
-  cout << "SET CURRENT SIZE" <<endl;
+  return item_count_;
 }
 
-/**Checks whether this set is empty.
-@return True if the set is empty, or false if not.*/
+/*Checks whether this set is empty*/
 template<class ItemType>
 bool Set<ItemType>::isEmpty() const
 {
-  cout << "SET IS EMPTY" <<endl;
+  if(item_count_ == 0)
+  {
+    return true;
+  }
+  return false;
 }
 
-/**Adds a new entry to this set.
-@post If successful, newEntry is stored in the set and the count of items in the set has increased by 1.
-@param newEntry The object to be added as a new entry.
-@return True if addition was successful, or false if not.*/
+/*Adds a new entry to this set*/
 template<class ItemType>
 bool Set<ItemType>::add(const ItemType& newEntry)
 {
-  cout << "SET ADD" <<endl;
+  if(item_count_ < max_items_ && getIndexOf(newEntry) == -1)
+  {
+    items_[item_count_] = newEntry;
+    item_count_++;
+    return true;
+  }
+  return false;
 }
 
-/**Removes a given entry from this set, if possible.
-@post If successful, anEntry has been removed from the set and the count of tiems in the set has decreased by 1.
-@param anEntry The entry to be removed.
-@return True if removal was sucessful, or false if not.*/
+/*Removes a given entry from this set, if possible*/
 template<class ItemType>
 bool Set<ItemType>::remove(const ItemType& anEntry)
 {
-  cout << "SET REMOVE" <<endl;
+  if(item_count_ != 0)
+  {
+    int index = getIndexOf(anEntry);
+    items_[index] = items_[item_count_-1];
+    item_count_--;
+    return true;
+  }
+  return false;
 }
 
-/**Removes all entries from this set.
-@post set contains no items, and the count of items is 0.*/
+/*Removes all entries from this set*/
 template<class ItemType>
 void Set<ItemType>::clear() 
 {
-  cout << "CLEAR" <<endl;
+  item_count_ = 0;
 }
 
-/**Tests whether this set contains a given entry.
-@param anEntry The entry to locate.
-@return True if set contains anEntry, or false otherwise.*/
+/*Tests whether this set contains a given entry*/
 template<class ItemType>
 bool Set<ItemType>::contains(const ItemType& anEntry) const
 {
-  cout << "SET CONTAINS" <<endl;
+  int index = getIndexOf(anEntry);
+  if(index != -1)
+  {
+    return true;
+  }
+  return false;
 }
 
-/**Fills a vector with all entries that are in this set.
-@return A vector containing all the entries in the set.*/
+/*Fills a vector with all entries that are in this set*/
 template<class ItemType>
 vector<ItemType> Set<ItemType>::toVector() const
 {
-  cout << "SET VECTOR" <<endl;
+  vector<ItemType> fillVector;
+  for(int i = 0; i < item_count_; i++)
+  {
+    fillVector.push_back(items_[i]);
+  }
+  return fillVector;
+}
+
+/*Private member function
+Gets the index of an entry, if possible*/
+template<class ItemType>
+int Set<ItemType>::getIndexOf(const ItemType& target) const
+{
+  for(int i = 0; i < item_count_; i++)
+  {
+    if(items_[i] == target)
+      return i;
+  }
+  return -1;
 }
